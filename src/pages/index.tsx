@@ -2,6 +2,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { Button } from "~/components/ui/button";
 
+import { ThemeProvider } from "~/components/theme/theme-provider";
+import { ThemeToggle } from "~/components/theme/theme-toggle";
+
 import { api } from "~/lib/api";
 
 export default function Home() {
@@ -15,23 +18,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Saas Template - Scheduling App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-           
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeToggle />
+        
+        <main className="flex min-h-screen flex-col items-center justify-center">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+            <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+              Saas Template - Scheduling App
+            </h1>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
 
-            <AuthShowcase />
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-2xl">
+                {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+              </p>
+
+              <AuthShowcase />
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </ThemeProvider>
     </>
   );
 }
