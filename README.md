@@ -28,3 +28,23 @@ If you are not familiar with the different technologies used in this project, pl
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+
+
+
+### Run dev
+
+```Shell
+npm run dev
+```
+
+### Migrating Database (MongoDB)
+
+```Shell
+npx prisma db push
+```
+
+### Generate Nextauth secret
+
+```Shell
+openssl rand -base64 32
+```
