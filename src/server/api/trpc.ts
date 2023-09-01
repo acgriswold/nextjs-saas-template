@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 
+import { User, UserRole } from "@prisma/client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
@@ -129,3 +130,31 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+
+const enforceUserIsTeacher = t.middleware(({ ctx, next }) => {
+  if (ctx.session?.user?.role !== UserRole.TEACHER) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+export const teacherProcedure = t.procedure.use(enforceUserIsTeacher);
+
+
+const enforceUserIsOwner = t.middleware(({ ctx, next }) => {
+  if (ctx.session?.user?.role !== UserRole.OWNER) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+export const ownerProcedure = t.procedure.use(enforceUserIsOwner);
