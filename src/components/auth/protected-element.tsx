@@ -2,6 +2,8 @@ import { useSession } from "next-auth/react";
 import type { Router } from "next/router";
 import type { PropsWithChildren, ReactNode } from "react";
 
+import type { auth } from "~/types/global";
+
 
 export function ProtectedElement({ auth, router, children }: PropsWithChildren<{ auth: auth.PageAuth | undefined | null, router: Router }>): ReactNode {
   const { data: sessionData, status } = useSession();
