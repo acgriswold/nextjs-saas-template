@@ -12,7 +12,7 @@ export const Dashboard: NextComponentTypeWithAuth = () => {
 }
 
 Dashboard.auth = {
-  role: UserRole.OWNER,
+  match: [UserRole.OWNER],
   loading: <div>Loading owner Page...</div>,
   unauthorized_redirect: {
     callbackUrl: "/dashboard/owner-only-page",

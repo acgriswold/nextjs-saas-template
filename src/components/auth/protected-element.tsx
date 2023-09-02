@@ -14,7 +14,7 @@ export function ProtectedElement({ auth, router, children }: PropsWithChildren<{
   if (status === "loading")
     return auth.loading ?? <div>Loading...</div>
 
-  if (sessionData?.user?.role === auth.role)
+  if (auth.match.some(m => m === sessionData?.user?.role))
     return children;
 
   if (auth.unauthorized_redirect)

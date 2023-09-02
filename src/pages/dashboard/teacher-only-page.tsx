@@ -10,7 +10,7 @@ export const Dashboard: NextComponentTypeWithAuth = () => {
 }
 
 Dashboard.auth = {
-  role: UserRole.TEACHER,
+  match: [UserRole.TEACHER],
   loading: <div>Loading teacher page...</div>,
   unauthorized_redirect: {
     callbackUrl: "/dashboard/teacher-only-page",

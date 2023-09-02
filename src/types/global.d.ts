@@ -10,7 +10,7 @@ declare namespace auth {
     }
     
     declare type PageAuth = {
-        role: UserRole
+        match: UserRole[]
         loading?: ReactNode
         unauthorized_redirect?: AuthRedirect
     };
