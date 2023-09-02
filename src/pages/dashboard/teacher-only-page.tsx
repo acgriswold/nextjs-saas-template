@@ -1,6 +1,7 @@
 import { UserRole } from "@prisma/client";
+import type { NextComponentTypeWithAuth } from "next/app";
 
-export default function Dashboard() {
+export const Dashboard: NextComponentTypeWithAuth = () => {
   return (
     <h1>
       This is a teacher only page
@@ -9,10 +10,12 @@ export default function Dashboard() {
 }
 
 Dashboard.auth = {
-  role: UserRole.TEACHER,
+  match: [UserRole.TEACHER],
   loading: <div>Loading teacher page...</div>,
   unauthorized_redirect: {
-    callbackUrl: "/",
-    message: "You do not have permissions to view this page. Login to a teacher account."
+    callbackUrl: "/dashboard/teacher-only-page",
+    message: "Login to a teacher account to view this page."
   }
 }
+
+export default Dashboard;

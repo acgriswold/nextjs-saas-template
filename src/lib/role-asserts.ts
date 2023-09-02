@@ -1,5 +1,5 @@
 import { UserRole } from "@prisma/client";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 export function throwIfNotOwner(session: Session | null) {
     throwIfNotRole({ session, expected_role: UserRole.OWNER, error_msg: "Unauthorized: Only visible by owners" })
