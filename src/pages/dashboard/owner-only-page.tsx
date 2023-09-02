@@ -1,18 +1,18 @@
-import { useSession } from "next-auth/react";
-
-import { throwIfNotOwner } from "~/lib/role-asserts";
+import { UserRole } from "@prisma/client";
 
 export default function Dashboard() {
-  const { data: sessionData, status } = useSession();
-
-  if (status === "loading")
-    return <div>loading user</div>
-  
-  throwIfNotOwner(sessionData)
-
   return (
     <h1>
       This is a owner only page
     </h1>
   );
+}
+
+Dashboard.auth = {
+  role: UserRole.OWNER,
+  loading: <div>Loading owner Page...</div>,
+  unauthorized_redirect: {
+    callbackUrl: "/",
+    message: "You do not have permissions to view this page. Login to an owner account"
+  }
 }

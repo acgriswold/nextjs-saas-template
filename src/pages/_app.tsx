@@ -1,7 +1,7 @@
-import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { type AppType } from "next/app";
+import type { AppTypeWithAuth } from "next/app";
 import localFont from 'next/font/local'
+import { ProtectedElement } from "~/components/auth/protected-element";
 
 import { api } from "~/lib/api";
 
@@ -16,9 +16,10 @@ const borna = localFont({
   ],
 })
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppTypeWithAuth = ({
   Component,
-  pageProps: { session, ...pageProps },
+  router,
+  pageProps: { session, ...pageProps }
 }) => {
   return (
     <>
@@ -30,7 +31,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
         `}</style>
 
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <ProtectedElement auth={Component.auth} router={router}>
+          <Component {...pageProps} />
+        </ProtectedElement>
       </SessionProvider>
     </>
   );

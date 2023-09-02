@@ -1,18 +1,18 @@
-import { useSession } from "next-auth/react";
-
-import { throwIfNotTeacher } from "~/lib/role-asserts";
+import { UserRole } from "@prisma/client";
 
 export default function Dashboard() {
-  const { data: sessionData, status } = useSession();
-  
-
-  if (status === "loading")
-    return <div>loading user</div>
-
-  throwIfNotTeacher(sessionData)
   return (
     <h1>
       This is a teacher only page
     </h1>
   );
+}
+
+Dashboard.auth = {
+  role: UserRole.TEACHER,
+  loading: <div>Loading teacher page...</div>,
+  unauthorized_redirect: {
+    callbackUrl: "/",
+    message: "You do not have permissions to view this page. Login to a teacher account."
+  }
 }
