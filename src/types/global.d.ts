@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { UserRole } from "@prisma/client";
 
 declare type EmptyObject = Record<string, never>
 
