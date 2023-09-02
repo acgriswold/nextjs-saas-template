@@ -7,7 +7,7 @@ import type { auth } from "~/types/global";
 
 export function ProtectedElement({ auth, router, children }: PropsWithChildren<{ auth: auth.PageAuth | undefined | null, router: Router }>): ReactNode {
   const { data: sessionData, status } = useSession();
-  
+
   if (!auth)
     return children;
 
@@ -19,8 +19,11 @@ export function ProtectedElement({ auth, router, children }: PropsWithChildren<{
 
   if (auth.unauthorized_redirect)
     router.push(`/api/auth/signin?msg=${auth.unauthorized_redirect.message}&callbackUrl=${auth.unauthorized_redirect.callbackUrl ?? "/"}`)
+      .catch(e => console.error(e))
   else
     router.push(`/api/auth/signin`)
+      .catch(e => console.error(e))
+
 
   return <></>
 }
