@@ -49,10 +49,16 @@ model User {
     emailVerified DateTime?
     image         String?
 
-    role          UserRole @default(USER)
+    role UserRole @default(USER)
 
-    accounts      Account[]
-    sessions      Session[]
+    accounts Account[]
+    sessions Session[]
+
+    project Project?
+
+    appointmentIds String[]
+    appointments   Appointment[] @relation(name: "AppointmentsOfUsers", fields: [appointmentIds], references: [id])
+    instructing    Appointment[]
 }
 
 model VerificationToken {
@@ -63,8 +69,34 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model Project {
+    id        String   @id @default(cuid()) @map("_id")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String?
 
+    ownerId String @unique
+    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
+    appointmentIds String[]
+    appointments   Appointment[]
+}
+
+model Appointment {
+    id        String   @id @default(cuid()) @map("_id")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    start     DateTime
+    end       DateTime
+
+    projectId String
+    project   Project @relation(fields: [projectId], references: [id])
+
+    attendantIds String[]
+    attendants   User[]   @relation(name: "AppointmentsOfUsers", fields: [attendantIds], references: [id])
+    instructorId String?
+    instructor   User?    @relation(fields: [instructorId], references: [id], onDelete: SetNull)
+}
 
 enum UserRole {
     USER
