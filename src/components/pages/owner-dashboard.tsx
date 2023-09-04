@@ -1,5 +1,5 @@
 import { UserRole } from "@prisma/client"
-import { NextComponentTypeWithAuth } from "next/app"
+import type { NextComponentTypeWithAuth } from "next/app"
 
 import { api } from "~/lib/api"
 import { ProjectForm } from "../forms/project-form";

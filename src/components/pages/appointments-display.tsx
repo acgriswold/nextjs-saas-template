@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactElement, useState } from "react";
+import { type PropsWithChildren, type ReactElement, useState } from "react";
 
-import { Appointment } from "@prisma/client";
+import type { Appointment } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { api } from "~/lib/api";
@@ -15,10 +15,8 @@ export function AppointmentsDisplay({ children, projectId, renderAppointment }: 
     const utils = api.useContext()
 
     const createAppointment = api.appointment.createAppointment.useMutation({
-        onSuccess(_) {
-            utils.appointment.getAppointmentsByProject.invalidate({
-                projectId: projectId
-            })
+        async onSuccess(_) {
+            await utils.appointment.getAppointmentsByProject.invalidate({ projectId: projectId })
         }
     })
 
@@ -40,14 +38,14 @@ export function AppointmentsDisplay({ children, projectId, renderAppointment }: 
 }
 
 function ShowAppointments({ projectId, renderAppointment }: AppointmentsDisplayPropsInternal) {
-    var [startDate] = useState(new Date(2023, 8, 3))
-    var [endDate] = useState(new Date(2023, 8, 5))
+    const [startDate] = useState(new Date(2023, 8, 3))
+    const [endDate] = useState(new Date(2023, 8, 5))
 
     const { data: appointmentData, status } = api.appointment.getAppointmentsByProject.useQuery({
         projectId: projectId,
         startDate: startDate,
         endDate: endDate
-    }, {refetchOnMount: false})
+    }, { refetchOnMount: false })
 
     if (status === "loading")
         return <div>loading appointments...</div>
@@ -71,10 +69,8 @@ export function AppointmentDisplay({ appointment }: AppointmentDisplayProps) {
     const utils = api.useContext()
 
     const deleteAppointment = api.appointment.deleteAppointments.useMutation({
-        onSuccess(_) {
-            utils.appointment.getAppointmentsByProject.invalidate({
-                projectId: appointment.projectId
-            })
+        async onSuccess(_) {
+            await utils.appointment.getAppointmentsByProject.invalidate({ projectId: appointment.projectId })
         }
     })
 
@@ -96,7 +92,7 @@ export function AppointmentDisplay({ appointment }: AppointmentDisplayProps) {
                 {
                     appointment.attendantIds.map((id) => {
                         return (
-                            <div>{id}</div>
+                            <div key={id}>{id}</div>
                         )
                     })
                 }
@@ -104,7 +100,7 @@ export function AppointmentDisplay({ appointment }: AppointmentDisplayProps) {
 
 
             <CardFooter className="flex flex-grow">
-                <Button onClick={() => deleteAppointment.mutateAsync({
+                <Button onClick={() => deleteAppointment.mutate({
                     appointmentIds: [appointment.id]
                 })}>
                     Delete?
