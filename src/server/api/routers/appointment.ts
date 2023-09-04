@@ -1,4 +1,4 @@
-import { ZodType, z } from "zod";
+import { type ZodType, z } from "zod";
 import { UserRole } from '@prisma/client';
 
 import {

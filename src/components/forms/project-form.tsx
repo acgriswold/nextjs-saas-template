@@ -13,8 +13,8 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 export function ProjectForm() {
     const utils = api.useContext();
     const createProject = api.project.createProject.useMutation({
-        onSuccess(_) {
-            utils.project.getProject.invalidate()
+        async onSuccess(_) {
+            await utils.project.getProject.invalidate()
         }
     });
 
@@ -42,7 +42,7 @@ export function ProjectForm() {
 
             <CardContent>
                 <FormProvider {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={() => form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                             control={form.control}
                             name="projectName"
@@ -53,7 +53,7 @@ export function ProjectForm() {
                                         <Input placeholder="Your local female owned gym" {...field} />
                                     </FormControl>
                                     <FormDescription>
-                                        Setup your account's project and start inviting people to join!
+                                        {"Setup your account's project and start inviting people to join!"}
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
